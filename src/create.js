@@ -1,7 +1,9 @@
 var has = require("has"),
+    vfs = require("vinyl-fs"),
     once = require("once"),
     isString = require("is_string"),
     isFunction = require("is_function"),
+    watch = require("./watch"),
     series = require("./series"),
     parallel = require("./parallel");
 
@@ -74,6 +76,11 @@ function create() {
             return ret;
         }
     }
+
+    task.src = vfs.src;
+    task.dest = vfs.dest;
+    task.symlink = vfs.symlink;
+    task.watch = watch;
 
     task.run = run;
     task.help = help;

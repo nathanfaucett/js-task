@@ -35,9 +35,9 @@ function create() {
                 throw new TypeError("task function must be specified");
             }
 
-            fn.displayName = name;
-            fn.description = description;
-
+            if (description) {
+                fn.description = description;
+            }
             _tasks[name] = fn;
 
             return fn;
@@ -61,13 +61,13 @@ function create() {
             ret;
 
         if (name && localHas(tasks, name)) {
-            return taskToString(tasks[name]);
+            return taskToString(tasks[name], name);
         } else {
             ret = "";
 
             for (name in tasks) {
                 if (localHas(tasks, name)) {
-                    ret += taskToString(tasks[name]);
+                    ret += taskToString(tasks[name], name);
                 }
             }
 
@@ -84,10 +84,10 @@ function create() {
     return task;
 }
 
-function taskToString(fn) {
+function taskToString(fn, displayName) {
     if (!fn.description) {
-        return " - " + fn.displayName + "\n\r";
+        return " - " + displayName + "\n\r";
     } else {
-        return " - " + fn.displayName + ":\n\r\t\t" + fn.description;
+        return " - " + displayName + ":\n\r\t\t" + fn.description + "\n\r";
     }
 }

@@ -31,6 +31,7 @@
   "dependencies": {
     "array-for_each": "git://github.com/nathanfaucett/array-for_each.git",
     "async_done": "git://github.com/nathanfaucett/async_done.git",
+    "has": "git://github.com/nathanfaucett/has.git",
     "is_function": "git://github.com/nathanfaucett/is_function.git",
     "is_string": "git://github.com/nathanfaucett/is_string.git",
     "once": "git://github.com/nathanfaucett/once.git"

@@ -1,8 +1,8 @@
 var chokidar = require("chokidar"),
-    isArray = require("is_array"),
-    isFunction = require("is_function"),
-    emptyFunction = require("empty_function"),
-    isNullOrUndefined = require("is_null_or_undefined");
+    isArray = require("@nathanfaucett/is_array"),
+    isFunction = require("@nathanfaucett/is_function"),
+    emptyFunction = require("@nathanfaucett/empty_function"),
+    isNullOrUndefined = require("@nathanfaucett/is_null_or_undefined");
 
 
 module.exports = watch;

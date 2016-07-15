@@ -1,4 +1,4 @@
-var isFunction = require("is_function");
+var isFunction = require("@nathanfaucett/is_function");
 
 
 module.exports = throwIfNotFunction;

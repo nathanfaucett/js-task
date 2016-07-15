@@ -1,8 +1,11 @@
-var has = require("has"),
+var apply = require("@nathanfaucett/apply"),
+    has = require("@nathanfaucett/has"),
     vfs = require("vinyl-fs"),
-    once = require("once"),
-    isString = require("is_string"),
-    isFunction = require("is_function"),
+    once = require("@nathanfaucett/once"),
+    isString = require("@nathanfaucett/is_string"),
+    isFunction = require("@nathanfaucett/is_function"),
+    EventEmitter = require("@nathanfaucett/event_emitter"),
+    objectForEach = require("@nathanfaucett/object-for_each"),
     watch = require("./watch"),
     series = require("./series"),
     parallel = require("./parallel");
@@ -12,7 +15,8 @@ module.exports = create;
 
 
 function create() {
-    var _tasks = {};
+    var _tasks = {},
+        _emitter = new EventEmitter();
 
     function task(name, description, fn) {
         if (isFunction(description)) {
@@ -53,7 +57,7 @@ function create() {
         if (isFunction(task)) {
             return task(cb);
         } else {
-            throw new Error("No task named " + name);
+            throw new Error("No task found named " + name);
         }
     }
 
@@ -76,6 +80,14 @@ function create() {
             return ret;
         }
     }
+
+    objectForEach(_emitter, function each(fn, name) {
+        if (isFunction(fn)) {
+            task[name] = function emitterFunction() {
+                apply(fn, arguments, _emitter);
+            };
+        }
+    });
 
     task.src = vfs.src;
     task.dest = vfs.dest;

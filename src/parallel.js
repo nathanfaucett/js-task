@@ -1,6 +1,6 @@
-var once = require("once"),
-    asyncDone = require("async_done"),
-    arrayForEach = require("array-for_each"),
+var once = require("@nathanfaucett/once"),
+    asyncDone = require("@nathanfaucett/async_done"),
+    arrayForEach = require("@nathanfaucett/array-for_each"),
     throwIfNotFunction = require("./throwIfNotFunction");
 
 

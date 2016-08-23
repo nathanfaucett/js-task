@@ -1,14 +1,15 @@
 var once = require("@nathanfaucett/once"),
     asyncDone = require("@nathanfaucett/async_done"),
     arrayForEach = require("@nathanfaucett/array-for_each"),
-    prepareFunctions = require("./prepareFunctions");
+    throwIfNotFunction = require("./throwIfNotFunction");
 
 
 module.exports = parallel;
 
 
-function parallel(emitter, functions) {
-    arrayForEach(functions, prepareFunctions(emitter));
+function parallel() {
+    var functions = arguments;
+    arrayForEach(functions, throwIfNotFunction);
     return createParallel(functions);
 }
 

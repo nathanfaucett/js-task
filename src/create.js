@@ -101,12 +101,8 @@ function create() {
     task.help = help;
     task.create = create;
 
-    task.series = function() {
-        return series(_emitter, arguments);
-    };
-    task.parallel = function() {
-        return parallel(_emitter, arguments);
-    };
+    task.series = series;
+    task.parallel = parallel;
 
     return task;
 }

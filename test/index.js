@@ -1,4 +1,5 @@
 var tape = require("tape"),
+    Stream = require("stream"),
     task = require("..");
 
 
@@ -17,13 +18,33 @@ tape("task(name, fn)", function(assert) {
         return simple;
     }
 
+    function createStreamTask(name) {
+        var mockedStream = new Stream.Readable();
+
+        mockedStream._read = function() { /* do nothing */ };
+
+        count += 1;
+
+        function simple() {
+            count -= 1;
+            process.nextTick(function onNextTick() {
+                mockedStream.emit("data", "");
+                mockedStream.emit("end");
+            });
+            return mockedStream;
+        }
+        simple.displayName = name;
+
+        return simple;
+    }
+
     task("series", "series runs series0 and series1, one after the other", task.series(
         createTask("series0"),
-        createTask("series1")
+        createStreamTask("series1")
     ));
     task("parallel", "parallel runs parallel0 and parallel1 in parallel", task.parallel(
         createTask("parallel0"),
-        createTask("parallel1")
+        createStreamTask("parallel1")
     ));
     task("complex", "complex runs a simple functions, series and parallel", task.parallel(
         createTask("simple"),

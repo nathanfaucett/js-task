@@ -1,5 +1,5 @@
 var now = require("@nathanfaucett/now"),
-    apply = require("@nathanfaucett/apply");
+    asyncDone = require("@nathanfaucett/async_done");
 
 
 var TaskPrototype;
@@ -18,11 +18,15 @@ TaskPrototype = Task.prototype;
 Task.create = function(name, fn, emitter) {
     var task = new Task(name);
 
-    return function runTask(done) {
+    return function runTask(cb) {
         task.start(emitter);
-        return fn(function wrap() {
+        return asyncDone(fn, function onDone(error) {
             task.end(emitter);
-            return apply(done, arguments);
+            if (error) {
+                cb(error);
+            } else {
+                cb();
+            }
         });
     };
 };

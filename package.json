@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/task",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "task scheduler",
   "repository": {
     "type": "git",
@@ -31,17 +31,18 @@
   "dependencies": {
     "@nathanfaucett/apply": "^0.0.1",
     "@nathanfaucett/array-for_each": "^0.0.1",
-    "@nathanfaucett/object-for_each": "^0.0.1",
     "@nathanfaucett/async_done": "^0.0.1",
-    "chokidar": "^1.4.3",
+    "@nathanfaucett/empty_function": "^0.0.1",
+    "@nathanfaucett/event_emitter": "^0.0.1",
     "@nathanfaucett/has": "^0.0.1",
     "@nathanfaucett/is_array": "^0.0.1",
     "@nathanfaucett/is_function": "^0.0.1",
     "@nathanfaucett/is_null_or_undefined": "^0.0.1",
-    "@nathanfaucett/empty_function": "^0.0.1",
-    "@nathanfaucett/event_emitter": "^0.0.1",
     "@nathanfaucett/is_string": "^0.0.1",
+    "@nathanfaucett/now": "0.0.3",
+    "@nathanfaucett/object-for_each": "^0.0.1",
     "@nathanfaucett/once": "^0.0.1",
+    "chokidar": "^1.4.3",
     "vinyl-fs": "^2.4.2"
   }
 }

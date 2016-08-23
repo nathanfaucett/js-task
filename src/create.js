@@ -8,7 +8,8 @@ var apply = require("@nathanfaucett/apply"),
     objectForEach = require("@nathanfaucett/object-for_each"),
     watch = require("./watch"),
     series = require("./series"),
-    parallel = require("./parallel");
+    parallel = require("./parallel"),
+    Task = require("./Task");
 
 
 module.exports = create;
@@ -16,6 +17,7 @@ module.exports = create;
 
 function create() {
     var _tasks = {},
+        _taskDescription = {},
         _emitter = new EventEmitter();
 
     function task(name, description, fn) {
@@ -42,9 +44,10 @@ function create() {
             }
 
             if (description) {
-                fn.description = description;
+                _taskDescription[name] = description;
             }
-            _tasks[name] = fn;
+            fn.name = fn.displayName = name;
+            _tasks[name] = Task.create(name, fn, _emitter);
 
             return fn;
         }
@@ -67,13 +70,13 @@ function create() {
             ret;
 
         if (name && localHas(tasks, name)) {
-            return taskToString(tasks[name], name);
+            return taskToString(tasks[name], _taskDescription[name], name);
         } else {
             ret = "";
 
             for (name in tasks) {
                 if (localHas(tasks, name)) {
-                    ret += taskToString(tasks[name], name);
+                    ret += taskToString(tasks[name], _taskDescription[name], name);
                 }
             }
 
@@ -81,7 +84,7 @@ function create() {
         }
     }
 
-    objectForEach(_emitter, function each(fn, name) {
+    objectForEach(EventEmitter.prototype, function each(fn, name) {
         if (isFunction(fn)) {
             task[name] = function emitterFunction() {
                 apply(fn, arguments, _emitter);
@@ -96,17 +99,22 @@ function create() {
 
     task.run = run;
     task.help = help;
-    task.series = series;
-    task.parallel = parallel;
     task.create = create;
+
+    task.series = function() {
+        return series(_emitter, arguments);
+    };
+    task.parallel = function() {
+        return parallel(_emitter, arguments);
+    };
 
     return task;
 }
 
-function taskToString(fn, displayName) {
-    if (!fn.description) {
+function taskToString(fn, description, displayName) {
+    if (!description) {
         return " - " + displayName + "\n\r";
     } else {
-        return " - " + displayName + ":\n\r\t\t" + fn.description + "\n\r";
+        return " - " + displayName + ":\n\r\t" + description + "\n\r";
     }
 }

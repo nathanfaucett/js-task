@@ -1,20 +1,19 @@
 var once = require("@nathanfaucett/once"),
     asyncDone = require("@nathanfaucett/async_done"),
     arrayForEach = require("@nathanfaucett/array-for_each"),
-    throwIfNotFunction = require("./throwIfNotFunction");
+    prepareFunctions = require("./prepareFunctions");
 
 
 module.exports = series;
 
 
-function series() {
-    var args = arguments;
-    arrayForEach(args, throwIfNotFunction);
-    return createSeries(args);
+function series(emitter, functions) {
+    arrayForEach(functions, prepareFunctions(emitter));
+    return createSeries(functions);
 }
 
-function createSeries(args) {
-    var length = args.length;
+function createSeries(functions) {
+    var length = functions.length;
 
     return function series(callback) {
         var cb = once(callback),
@@ -26,7 +25,7 @@ function createSeries(args) {
             } else if (index === length) {
                 cb();
             } else {
-                asyncDone(args[index++], next);
+                asyncDone(functions[index++], next);
             }
         }
 

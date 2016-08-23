@@ -1,20 +1,19 @@
 var once = require("@nathanfaucett/once"),
     asyncDone = require("@nathanfaucett/async_done"),
     arrayForEach = require("@nathanfaucett/array-for_each"),
-    throwIfNotFunction = require("./throwIfNotFunction");
+    prepareFunctions = require("./prepareFunctions");
 
 
 module.exports = parallel;
 
 
-function parallel() {
-    var args = arguments;
-    arrayForEach(args, throwIfNotFunction);
-    return createParallel(args);
+function parallel(emitter, functions) {
+    arrayForEach(functions, prepareFunctions(emitter));
+    return createParallel(functions);
 }
 
-function createParallel(args) {
-    var length = args.length;
+function createParallel(functions) {
+    var length = functions.length;
 
     return function parallel(callback) {
         var cb = once(callback),
@@ -31,7 +30,7 @@ function createParallel(args) {
         }
 
         while (i++ < il) {
-            asyncDone(args[i], handler);
+            asyncDone(functions[i], handler);
         }
     };
 }

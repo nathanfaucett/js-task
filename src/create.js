@@ -21,6 +21,8 @@ function create() {
         _emitter = new EventEmitter();
 
     function task(name, description, fn) {
+        var newTask;
+
         if (isFunction(description)) {
             fn = description;
             description = "";
@@ -46,10 +48,10 @@ function create() {
             if (description) {
                 _taskDescription[name] = description;
             }
-            fn.name = fn.displayName = name;
-            _tasks[name] = Task.create(name, fn, _emitter);
+            newTask = _tasks[name] = Task.create(name, fn, _emitter);
+            newTask.name = newTask.displayName = name;
 
-            return fn;
+            return newTask;
         }
     }
 
@@ -84,6 +86,18 @@ function create() {
         }
     }
 
+    function getName(fn) {
+        return fn.displayName || fn.name || "<unknown>";
+    }
+
+    function getDescription(fn) {
+        return _taskDescription[fn.displayName || fn.name];
+    }
+
+    function each(fn) {
+        return objectForEach(_tasks, fn, task);
+    }
+
     objectForEach(EventEmitter.prototype, function each(fn, name) {
         if (isFunction(fn)) {
             task[name] = function emitterFunction() {
@@ -103,6 +117,10 @@ function create() {
 
     task.series = series;
     task.parallel = parallel;
+
+    task.getName = getName;
+    task.getDescription = getDescription;
+    task.each = task.forEach = each;
 
     return task;
 }

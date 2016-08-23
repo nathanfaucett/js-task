@@ -11,7 +11,7 @@ tape("task(name, fn)", function(assert) {
 
         function simple(done) {
             count -= 1;
-            done();
+            setTimeout(done, Math.random() * 100);
         }
         simple.displayName = name;
 
@@ -19,19 +19,23 @@ tape("task(name, fn)", function(assert) {
     }
 
     function createStreamTask(name) {
-        var mockedStream = new Stream.Readable();
+        var readable = new Stream.Readable(),
+            writable = new Stream.Writable();
 
-        mockedStream._read = function() { /* do nothing */ };
+        readable._read = function() {};
+
+        writable.writable = true;
+        writable.write = function() {};
 
         count += 1;
 
         function simple() {
-            count -= 1;
-            process.nextTick(function onNextTick() {
-                mockedStream.emit("data", "");
-                mockedStream.emit("end");
-            });
-            return mockedStream;
+            setTimeout(function onNextTick() {
+                count -= 1;
+                readable.emit("data", "DATA");
+                readable.emit("end");
+            }, Math.random() * 100);
+            return readable.pipe(writable);
         }
         simple.displayName = name;
 
@@ -53,10 +57,14 @@ tape("task(name, fn)", function(assert) {
     ));
 
     task.on("Task.start", function(task) {
-        console.log("Started " + task.name);
+        console.log("Starting " + task.name);
     });
     task.on("Task.end", function(task) {
-        console.log("Finished " + task.name + " - " + (task.endTime - task.startTime));
+        console.log("Finished " + task.name + " after " + (task.endTime - task.startTime) + " ms");
+    });
+
+    task.each(function each(fn, name) {
+        assert.equal(task.getName(fn), name);
     });
 
     assert.equal(

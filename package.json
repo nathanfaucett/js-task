@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/task",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "task scheduler",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "@nathanfaucett/array-for_each": "^0.0.1",
     "@nathanfaucett/async_done": "^0.0.1",
     "@nathanfaucett/empty_function": "^0.0.1",
-    "@nathanfaucett/event_emitter": "^0.0.1",
+    "@nathanfaucett/event_emitter": "^0.0.2",
     "@nathanfaucett/has": "^0.0.1",
     "@nathanfaucett/is_array": "^0.0.1",
     "@nathanfaucett/is_function": "^0.0.1",

@@ -1,5 +1,7 @@
 var tape = require("tape"),
     Stream = require("stream"),
+    fs = require("fs"),
+    filePath = require("@nathanfaucett/file_path"),
     task = require("..");
 
 
@@ -76,5 +78,39 @@ tape("task(name, fn)", function(assert) {
         assert.equal(!error, true);
         assert.equal(count, 0);
         assert.end();
+    });
+});
+
+tape("task.watch(glob, fn, options)", function(assert) {
+    var file = filePath.join(__dirname, "file.txt"),
+        called = 0,
+        watcher = task.watch(filePath.join(__dirname, "**/*.txt"), function onChange() {
+
+            fs.readFile(file, function(e, b) {
+                var string;
+
+                if (e) {
+                    assert.end(e);
+                } else {
+                    string = b.toString();
+                    called += 1;
+
+                    if (string === "123") {
+                        watcher.close();
+                        assert.equals(called, 2);
+                        assert.end();
+                    }
+                }
+            });
+        });
+
+    watcher.on("ready", function onReady() {
+        setTimeout(function onTimeout() {
+            fs.writeFile(file, "abc", function onWrite() {
+                setTimeout(function onTimeout() {
+                    fs.writeFile(file, "123", function onWrite() {});
+                }, 500);
+            });
+        }, 500);
     });
 });

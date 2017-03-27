@@ -1,6 +1,6 @@
 {
   "name": "@nathanfaucett/task",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "task scheduler",
   "repository": {
     "type": "git",
@@ -21,12 +21,13 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
+    "@nathanfaucett/file_path": "^0.0.4",
     "grunt": "^1.0.1",
-    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-jsbeautifier": "^0.2.13",
-    "tap-spec": "^4.1.0",
-    "tape": "^4.2.2",
-    "zuul": "^3.7.2"
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.3",
+    "zuul": "^3.11.1"
   },
   "dependencies": {
     "@nathanfaucett/apply": "^0.0.1",
@@ -39,10 +40,10 @@
     "@nathanfaucett/is_function": "^0.0.1",
     "@nathanfaucett/is_null_or_undefined": "^0.0.1",
     "@nathanfaucett/is_string": "^0.0.1",
-    "@nathanfaucett/now": "0.0.3",
+    "@nathanfaucett/now": "^0.0.3",
     "@nathanfaucett/object-for_each": "^0.0.2",
     "@nathanfaucett/once": "^0.0.1",
-    "chokidar": "^1.4.3",
-    "vinyl-fs": "^2.4.2"
+    "chokidar": "^1.6.1",
+    "vinyl-fs": "^2.4.4"
   }
 }
